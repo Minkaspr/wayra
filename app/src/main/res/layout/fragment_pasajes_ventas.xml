@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.TicketSalesFragment">
+    tools:context=".ui.PasajesVentasFragment">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/actvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Venta de Pasajes"
+        android:text="@string/fts_titulo"
         android:textAppearance="?attr/textAppearanceTitleLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,10 +40,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Primer Nombre"
+                android:hint="@string/fts_til_prim_nom"
                 app:counterEnabled="false"
-                app:counterMaxLength="32"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="32">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietPrimNombre"
                     android:layout_width="match_parent"
@@ -65,10 +64,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Segundo Nombre"
+                android:hint="@string/fts_til_seg_nom"
                 app:counterEnabled="false"
-                app:counterMaxLength="36"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="36">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietSegNombre"
                     android:layout_width="match_parent"
@@ -96,10 +94,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Apellido Paterno"
+                android:hint="@string/fts_til_ape_pat"
                 app:counterEnabled="false"
-                app:counterMaxLength="36"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="36">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietApePaterno"
                     android:layout_width="match_parent"
@@ -121,10 +118,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Apellido Materno"
+                android:hint="@string/fts_til_ape_mat"
                 app:counterEnabled="false"
-                app:counterMaxLength="36"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="36">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietApeMaterno"
                     android:layout_width="match_parent"
@@ -152,10 +148,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="N° Doc. Identidad"
+                android:hint="@string/fts_til_num_iden"
                 app:counterEnabled="false"
-                app:counterMaxLength="12"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="12">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietNumIdentidad"
                     android:layout_width="match_parent"
@@ -177,10 +172,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Teléfono"
+                android:hint="@string/fts_til_telefono"
                 app:counterEnabled="false"
-                app:counterMaxLength="9"
-                app:endIconMode="clear_text">
+                app:counterMaxLength="9">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietTelefono"
                     android:layout_width="match_parent"
@@ -208,13 +202,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Origen">
+                android:hint="@string/fts_til_origen">
                 <AutoCompleteTextView
                     android:id="@+id/actvOrigen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:imeOptions="actionNext"/>
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -227,13 +220,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Destino">
+                android:hint="@string/fts_til_destino">
                 <AutoCompleteTextView
                     android:id="@+id/actvDestino"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:imeOptions="actionNext"/>
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -246,7 +238,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Precio">
+            android:hint="@string/fts_til_precio">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tietPrecio"
                 android:layout_width="match_parent"
@@ -272,7 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Fecha">
+                android:hint="@string/fts_til_fecha">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietFecha"
                     android:layout_width="match_parent"
@@ -292,7 +284,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:hint="Hora">
+                android:hint="@string/fts_til_hora">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietHora"
                     android:layout_width="match_parent"
@@ -307,13 +299,13 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirmar"
         style="@style/Widget.Material3.Button"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginHorizontal="16dp"
         android:enabled="false"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:text="Confirmar"
+        android:text="@string/fts_btn_confirmar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -26,7 +26,7 @@
             android:checkable="true"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="1">
+            android:contentDescription="@string/fh_card_1_desc">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -37,12 +37,12 @@
                     android:layout_height="64dp"
                     app:srcCompat="@drawable/ic_ticket"
                     android:scaleType="fitCenter"
-                    android:contentDescription="ticket"
+                    android:contentDescription="@string/fh_card_1_img_desc"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pasajes"
+                    android:text="@string/fh_card_1_titulo"
                     android:layout_marginTop="16dp"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
                     />
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Venta de pasajes"
+                    android:text="@string/fh_card_1_c_prim"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
                     />
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Lima a Cusco"
+                    android:text="@string/fh_card_1_c_secund"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="?android:attr/textColorSecondary"
                     />
@@ -70,13 +70,51 @@
             android:layout_height="0dp" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvSynchronizeSales"
             android:layout_width="0dp"
             android:layout_height="180dp"
             android:layout_columnWeight="1"
             android:checkable="true"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="2"/>
+            android:contentDescription="@string/fh_card_2_desc">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    app:srcCompat="@drawable/ic_cloud"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/fh_card_2_img_desc"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fh_card_2_titulo"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/fh_card_2_c_prim"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/fh_card_2_c_secund"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
         <View
             android:layout_width="0dp"
             android:layout_columnWeight="1"
@@ -84,26 +122,102 @@
             android:layout_height="16dp" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvDataBase"
             android:layout_width="0dp"
             android:layout_height="180dp"
             android:layout_columnWeight="1"
             android:checkable="true"
             android:clickable="true"
             android:focusable="true"
-            android:contentDescription="3"/>
+            android:contentDescription="@string/fh_card_3_desc">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    app:srcCompat="@drawable/ic_server_cloud"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/fh_card_3_img_desc"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fh_card_3_titulo"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/fh_card_3_c_prim"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/fh_card_3_c_secund"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <View
             android:layout_width="16dp"
             android:layout_height="0dp"/>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvFee"
             android:layout_width="0dp"
             android:layout_height="180dp"
             android:layout_columnWeight="1"
             android:checkable="true"
             android:clickable="true"
             android:focusable="true"
-            android.contentDescription="4"/>
+            android:contentDescription="@string/fh_card_4_desc">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    app:srcCompat="@drawable/ic_tag_price"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/fh_card_4_img_desc"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fh_card_4_titulo"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/fh_card_4_c_prim"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/fh_card_4_c_secund"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </GridLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

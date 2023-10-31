@@ -1,6 +1,64 @@
 <resources>
     <string name="app_name">wayra</string>
+
+    <!-- ......HomeFragment...... -->
+    <string name="fh_card_1_titulo">Pasajes</string>
+    <string name="fh_card_1_c_prim">Venta de pasajes</string>
+    <string name="fh_card_1_c_secund">Lima a Cusco</string>
+    <string name="fh_card_1_desc">Card 1</string>
+    <string name="fh_card_1_img_desc">Icono ticket</string>
+
+    <string name="fh_card_2_titulo">Sincronizar</string>
+    <string name="fh_card_2_c_prim">Pasajes vendidos</string>
+    <string name="fh_card_2_c_secund">Cantidad: </string>
+    <string name="fh_card_2_desc">Card 2</string>
+    <string name="fh_card_2_img_desc">Icono cloud</string>
+
+    <string name="fh_card_3_titulo">Base de datos</string>
+    <string name="fh_card_3_c_prim">Gestión de pasajes</string>
+    <string name="fh_card_3_c_secund">Conexión a internet requerida</string>
+    <string name="fh_card_3_desc">Card 3</string>
+    <string name="fh_card_3_img_desc">Icono server cloud</string>
+
+    <string name="fh_card_4_titulo">Tarifa</string>
+    <string name="fh_card_4_c_prim">Gestión de tarifa</string>
+    <string name="fh_card_4_c_secund">Actualiza los precios</string>
+    <string name="fh_card_4_desc">Card 4</string>
+    <string name="fh_card_4_img_desc">Icono tag price</string>
+
+    <!-- ......PasajesVentasFragment...... -->
+    <string name="fts_titulo">Venta de Pasajes</string>
+    <string name="fts_til_prim_nom">Primer Nombre</string>
+    <string name="fts_til_seg_nom">Segundo Nombre</string>
+    <string name="fts_til_ape_pat">Apellido Paterno</string>
+    <string name="fts_til_ape_mat">Apellido Materno</string>
+    <string name="fts_til_num_iden">N° Doc. Identidad</string>
+    <string name="fts_til_telefono">Teléfono</string>
+    <string name="fts_til_origen">Origen</string>
+    <string name="fts_til_destino">Destino</string>
+    <string name="fts_til_precio">Precio</string>
+    <string name="fts_til_fecha">Fecha</string>
+    <string name="fts_til_hora">Hora</string>
+    <string name="fts_btn_confirmar">Confirmar</string>
+
+    <string name="precio_default">00.0</string>
+
+    <!-- ......SincronizarVentasFragment...... -->
+    <string name="fsv_titulo">Pasajes Vendidos</string>
+    <string name="fsv_btn_sincronizar">Sincronizar</string>
+
+    <!-- ......PasajesSelBdFragment...... -->
+    <string name="fbd_titulo">Pasajes Vendidos</string>
+    <string name="fbd_btn_flotante_añadir">Nuevo pasaje</string>
+
+    <!-- ......ItemPasajeList...... -->
+    <string name="ipl_datos_pers"> %1$s %2$s </string>
+    <string name="ipl_origen">Origen</string>
+    <string name="ipl_img_desc">Flecha derecha</string>
+    <string name="ipl_destino">Destino</string>
+    <string name="ipl_hora">Hora</string>
+    <string name="ipl_fecha">Fecha</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="precio_default">00.0</string>
 </resources>

@@ -23,7 +23,6 @@ public class ProvinciaAdapter extends ArrayAdapter<Provincia> {
     public @NonNull View getView(int position, View view, @NonNull ViewGroup parent) {
         // Obtén el objeto Provincia en esta posición
         Provincia provincia = getItem(position);
-        // Verifica si ya existe una vista reutilizable que podemos usar
         if (view == null) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.item_provincia_list, parent, false);
         }
@@ -31,7 +30,6 @@ public class ProvinciaAdapter extends ArrayAdapter<Provincia> {
         if (provincia != null) {
             tvNombre.setText(provincia.getNombre());
         }
-        // Devuelve la vista completa para que se muestre en la pantalla
         return view;
     }
 }

@@ -13,8 +13,11 @@ import android.view.ViewGroup;
 
 import com.google.android.material.card.MaterialCardView;
 import com.mk.wayra.R;
+import com.mk.wayra.ui.crudapi.PasajesSelBdFragment;
+
 public class HomeFragment extends Fragment {
 
+    private MaterialCardView mcvTicketSales, mcvSynchronizeSales, mcvDataBase;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +28,13 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        MaterialCardView mcvTicketSales = view.findViewById(R.id.mcvTicketSales);
-        mcvTicketSales.setOnClickListener(v ->replaceFragment(new TicketSalesFragment()));
-
+        mcvTicketSales = view.findViewById(R.id.mcvTicketSales);
+        mcvSynchronizeSales = view.findViewById(R.id.mcvSynchronizeSales);
+        mcvDataBase = view.findViewById(R.id.mcvDataBase);
+        //mcvTicketSales.setOnClickListener(v ->replaceFragment(new PasajesVentasFragment()));
+        mcvTicketSales.setOnClickListener(v ->((MainActivity) getActivity()).replaceFragment(new PasajesVentasFragment(), true));
+        mcvSynchronizeSales.setOnClickListener(v ->replaceFragment(new SincronizarVentasFragment()));
+        mcvDataBase.setOnClickListener(v -> replaceFragment(new PasajesSelBdFragment()));
         return view;
     }
 

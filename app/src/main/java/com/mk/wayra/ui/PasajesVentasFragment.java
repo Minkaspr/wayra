@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TicketSalesFragment extends Fragment {
+public class PasajesVentasFragment extends Fragment {
 
     private AutoCompleteTextView actvOrigen;
     private AutoCompleteTextView actvDestino;
@@ -45,6 +45,8 @@ public class TicketSalesFragment extends Fragment {
     private Button btnConfirmar;
     private int idOrigen = -1;
     private int idDestino = -1;
+    String origen,destino;
+    String fechaActualBD, horaActualBD, nomFechaHoraFichero;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,10 +65,12 @@ public class TicketSalesFragment extends Fragment {
 
         SimpleDateFormat dateFormatDB = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormatDB = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat nomFechaHora = new SimpleDateFormat("ddMMyyHHmmss", Locale.getDefault());
 
         // Datos para la BD
-        String fechaActualBD = dateFormatDB.format(currentTime);
-        String horaActualBD = timeFormatDB.format(currentTime);
+        fechaActualBD = dateFormatDB.format(currentTime);
+        horaActualBD = timeFormatDB.format(currentTime);
+        nomFechaHoraFichero = nomFechaHora.format(currentTime);
 
         SimpleDateFormat dateFormatFriendly = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
         SimpleDateFormat timeFormatFriendly = new SimpleDateFormat("hh:mm a", Locale.getDefault());
@@ -87,7 +91,7 @@ public class TicketSalesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ticket_sales, container, false);
+        View view = inflater.inflate(R.layout.fragment_pasajes_ventas, container, false);
 
         tilPrimNombre = view.findViewById(R.id.tilPrimNombre);
         tietPrimNombre = view.findViewById(R.id.tietPrimNombre);
@@ -125,7 +129,7 @@ public class TicketSalesFragment extends Fragment {
             public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarPalabras(tietSegNombre, tilSegNombre);
+                validarPalabrasOpcional(tietSegNombre, tilSegNombre);
                 btnConfirmar.setEnabled(validarCampos());
             }
             @Override
@@ -161,29 +165,31 @@ public class TicketSalesFragment extends Fragment {
 
         tietNumIdentidad.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                validarNumeros(userInput, tilNumIdentidad, 12);
                 btnConfirmar.setEnabled(validarCampos());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable userInput) {}
         });
         tietNumIdentidad.setOnFocusChangeListener((v, hasFocus) -> tilNumIdentidad.setCounterEnabled(hasFocus));
 
         tietTelefono.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                validarNumerosOpcional(userInput, tilTelefono, 7,10);
                 btnConfirmar.setEnabled(validarCampos());
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable userInput) {}
         });
         tietTelefono.setOnFocusChangeListener((v, hasFocus) -> tilTelefono.setCounterEnabled(hasFocus));
 
@@ -192,6 +198,7 @@ public class TicketSalesFragment extends Fragment {
         actvOrigen.setOnItemClickListener((parent, v, position, id) -> {
             Provincia provinciaSeleccionada = (Provincia) parent.getItemAtPosition(position);
             idOrigen = provinciaSeleccionada.getId();
+            origen = provinciaSeleccionada.getNombre();
             actualizarPrecio();
             btnConfirmar.setEnabled(validarCampos());
         });
@@ -199,11 +206,19 @@ public class TicketSalesFragment extends Fragment {
         actvDestino.setOnItemClickListener((parent, v, position, id) -> {
             Provincia provinciaSeleccionada = (Provincia) parent.getItemAtPosition(position);
             idDestino = provinciaSeleccionada.getId();
+            destino = provinciaSeleccionada.getNombre();
             actualizarPrecio();
             btnConfirmar.setEnabled(validarCampos());
         });
 
-        btnConfirmar.setOnClickListener(v->guardarDatos());
+        btnConfirmar.setOnClickListener(v -> {
+            try {
+                guardarDatos();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            getActivity().getSupportFragmentManager().popBackStack();
+        });
 
         return view;
     }
@@ -245,13 +260,67 @@ public class TicketSalesFragment extends Fragment {
         }
     }
 
+    private void validarPalabrasOpcional(TextInputEditText tietCampo, TextInputLayout tilCampo) {
+        CharSequence entradaUsuario = tietCampo.getText();
+        if (entradaUsuario == null) {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+            return;
+        }
+        String texto = entradaUsuario.toString();
+        if (texto.isEmpty()) {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+        } else if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
+            tilCampo.setError("Entrada inválida");
+        } else if (texto.length() >= 36) {
+            tilCampo.setError("La entrada es demasiado larga");
+        } else {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+        }
+    }
+
+    private void validarNumeros(CharSequence entradaUsuario, TextInputLayout tilCampo, int longitudMaxima) {
+        if (entradaUsuario == null) {
+            tilCampo.setError("Campo obligatorio");
+            return;
+        }
+        String texto = entradaUsuario.toString();
+        if (texto.isEmpty()) {
+            tilCampo.setError("Campo obligatorio");
+        } else if (!texto.matches("\\d+") || texto.length() > longitudMaxima) {
+            tilCampo.setError("Entrada inválida");
+        } else {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+        }
+    }
+
+    private void validarNumerosOpcional(CharSequence entradaUsuario, TextInputLayout tilCampo, int longitudMinima, int longitudMaxima) {
+        if (entradaUsuario == null) {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+            return;
+        }
+        String texto = entradaUsuario.toString();
+        if (texto.isEmpty()) {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+        } else if (!texto.matches("\\d+") || texto.length() < longitudMinima){
+            tilCampo.setError("Minimo " + longitudMinima + " dígitos");
+        } else if (!texto.matches("\\d+") || texto.length() >= longitudMaxima) {
+            tilCampo.setError("Entrada inválida");
+        } else {
+            tilCampo.setError(null);
+            tilCampo.setErrorEnabled(false);
+        }
+    }
+
+
     private void configurarAdaptadores() {
-        // Obtener las provincias de la base de datos
         List<Provincia> provincias = dbHelper.obtenerProvincias();
-
-        // Crear un adaptador a partir de la lista de provincias
         ProvinciaAdapter adapter = new ProvinciaAdapter(requireContext(), provincias);
-
         actvOrigen.setAdapter(adapter);
         actvDestino.setAdapter(adapter);
     }
@@ -276,46 +345,50 @@ public class TicketSalesFragment extends Fragment {
     }
 
     private boolean validarCampos() {
-        return tilPrimNombre.getError() == null &&
-                tilSegNombre.getError() == null &&
-                tilApePaterno.getError() == null &&
-                tilApeMaterno.getError() == null &&
-                !tietNumIdentidad.getText().toString().isEmpty() &&
-                !tietTelefono.getText().toString().isEmpty() &&
+        return !tietPrimNombre.getText().toString().isEmpty() && tilPrimNombre.getError() == null &&
+                (!tietSegNombre.getText().toString().isEmpty() && tilSegNombre.getError() == null || tietSegNombre.getText().toString().isEmpty()) &&
+                !tietApePaterno.getText().toString().isEmpty() && tilApePaterno.getError() == null &&
+                !tietApeMaterno.getText().toString().isEmpty() && tilApeMaterno.getError() == null &&
+                !tietNumIdentidad.getText().toString().isEmpty() && tilNumIdentidad.getError() == null &&
+                (!tietTelefono.getText().toString().isEmpty() && tilTelefono.getError() == null || tietTelefono.getText().toString().isEmpty()) &&
                 idOrigen != -1 &&
                 idDestino != -1 &&
                 idOrigen != idDestino;
     }
 
-    private void guardarDatos() {
-        // Crear un objeto JSON con los datos ingresados
+    private void guardarDatos() throws JSONException {
         JSONObject datos = new JSONObject();
         try {
-            datos.put("nombre", tietPrimNombre.getText().toString());
-            datos.put("segundoNombre", tietSegNombre.getText().toString());
-            // Agrega el resto de tus datos aquí...
+            datos.put("primerNom", tietPrimNombre.getText().toString());
+            String segundoNom = tietSegNombre.getText() != null ? tietSegNombre.getText().toString() : null;
+            if (segundoNom != null && segundoNom.isEmpty()) {segundoNom = null;}
+            datos.put("segundoNom", segundoNom);
+            datos.put("apePaterno", tietApePaterno.getText().toString());
+            datos.put("apeMaterno", tietApeMaterno.getText().toString());
+            datos.put("numIdentidad", tietNumIdentidad.getText().toString());
+            datos.put("telefono", tietTelefono.getText().toString());
+            datos.put("origen", origen);
+            datos.put("destino", destino);
+            datos.put("precio", Double.parseDouble(tietPrecio.getText().toString()));
+            datos.put("fecha", fechaActualBD);
+            datos.put("hora", horaActualBD);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        // Crear un nombre de archivo único
-        String nombreArchivo = "pasajes_" + System.currentTimeMillis() + ".json";
+        String json = datos.toString(4);
+        String nombreArchivo = "pasaje_" + nomFechaHoraFichero + ".json";
 
         // Obtener una referencia a la carpeta "wayra" (y crearla si no existe)
         File carpeta = getActivity().getDir("wayra", Context.MODE_PRIVATE);
-
-        // Crear un nuevo archivo dentro de la carpeta "wayra"
         File archivo = new File(carpeta, nombreArchivo);
 
-        // Guardar el objeto JSON en un archivo .json
         try {
             FileOutputStream fos = new FileOutputStream(archivo);
-            fos.write(datos.toString().getBytes());
+            fos.write(json.getBytes());
             fos.close();
             Toast.makeText(getActivity(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
