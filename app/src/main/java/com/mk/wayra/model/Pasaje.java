@@ -18,6 +18,9 @@ public class Pasaje {
     private String fecha;
     private String hora;
 
+    public Pasaje() {
+    }
+
     public Pasaje(String primerNom, String apePaterno, String origen, String destino, String fecha, String hora) {
         this.primerNom = primerNom;
         this.apePaterno = apePaterno;

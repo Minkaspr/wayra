@@ -44,7 +44,12 @@ public class PasajesSelBdFragment extends Fragment {
         rvPasajesVendidosBD = view.findViewById(R.id.rvPasajesVendidosBD);
         rvPasajesVendidosBD.setLayoutManager(new LinearLayoutManager(getActivity()));
         fabNuevoPasaje = view.findViewById(R.id.fabNuevoPasaje);
-        //fabNuevoPasaje.setOnClickListener(v -> ((MainActivity) getActivity()).replaceFragment(new PasajeInsBdFragment(), true));
+        fabNuevoPasaje.setOnClickListener(v -> {
+            MainActivity activity = (MainActivity) getActivity();
+            if (activity != null) {
+                activity.replaceFragment(new PasajeInsBdFragment(), true);
+            }
+        });
 
         PasajeApiService apiService = PasajeApiClient.getApiClient().create(PasajeApiService.class);
 

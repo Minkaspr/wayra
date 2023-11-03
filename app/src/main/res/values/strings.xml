@@ -10,7 +10,7 @@
 
     <string name="fh_card_2_titulo">Sincronizar</string>
     <string name="fh_card_2_c_prim">Pasajes vendidos</string>
-    <string name="fh_card_2_c_secund">Cantidad: </string>
+    <string name="fh_card_2_c_secund">Cantidad: %d</string>
     <string name="fh_card_2_desc">Card 2</string>
     <string name="fh_card_2_img_desc">Icono cloud</string>
 
@@ -41,6 +41,8 @@
     <string name="fts_til_hora">Hora</string>
     <string name="fts_btn_confirmar">Confirmar</string>
 
+    <string name="fpv_til_obligatorio">Obligatorio</string>
+    <string name="fpv_til_opcional">Opcional</string>
     <string name="precio_default">00.0</string>
 
     <!-- ......SincronizarVentasFragment...... -->

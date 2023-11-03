@@ -42,7 +42,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_prim_nom"
                 app:counterEnabled="false"
-                app:counterMaxLength="32">
+                app:counterMaxLength="32"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietPrimNombre"
                     android:layout_width="match_parent"
@@ -66,7 +68,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_seg_nom"
                 app:counterEnabled="false"
-                app:counterMaxLength="36">
+                app:counterMaxLength="36"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_opcional">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietSegNombre"
                     android:layout_width="match_parent"
@@ -96,7 +100,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_ape_pat"
                 app:counterEnabled="false"
-                app:counterMaxLength="36">
+                app:counterMaxLength="36"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietApePaterno"
                     android:layout_width="match_parent"
@@ -120,7 +126,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_ape_mat"
                 app:counterEnabled="false"
-                app:counterMaxLength="36">
+                app:counterMaxLength="36"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietApeMaterno"
                     android:layout_width="match_parent"
@@ -150,7 +158,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_num_iden"
                 app:counterEnabled="false"
-                app:counterMaxLength="12">
+                app:counterMaxLength="12"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietNumIdentidad"
                     android:layout_width="match_parent"
@@ -174,7 +184,9 @@
                 android:layout_weight="1"
                 android:hint="@string/fts_til_telefono"
                 app:counterEnabled="false"
-                app:counterMaxLength="9">
+                app:counterMaxLength="9"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_opcional">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/tietTelefono"
                     android:layout_width="match_parent"
@@ -202,7 +214,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/fts_til_origen">
+                android:hint="@string/fts_til_origen"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <AutoCompleteTextView
                     android:id="@+id/actvOrigen"
                     android:layout_width="match_parent"
@@ -220,7 +234,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/fts_til_destino">
+                android:hint="@string/fts_til_destino"
+                app:helperTextEnabled="true"
+                app:helperText="@string/fpv_til_obligatorio">
                 <AutoCompleteTextView
                     android:id="@+id/actvDestino"
                     android:layout_width="match_parent"
@@ -295,7 +311,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnConfirmar"
         style="@style/Widget.Material3.Button"

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.mk.wayra.R;
 import com.mk.wayra.model.Pasaje;
@@ -24,19 +25,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class SincronizarVentasFragment extends Fragment {
     private List<Pasaje> pasajes;
     private RecyclerView rvPasajesVendidos;
     private PasajeAdapter adapter;
+    private Button btnConfirmar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +46,8 @@ public class SincronizarVentasFragment extends Fragment {
         pasajes = cargarPasajesDesdeArchivosJSON();
         adapter = new PasajeAdapter(getActivity(), pasajes);
         rvPasajesVendidos.setAdapter(adapter);
+        btnConfirmar = view.findViewById(R.id.btnConfirmar);
+        btnConfirmar.setOnClickListener(v->{});
 
         return view;
     }
@@ -60,23 +58,20 @@ public class SincronizarVentasFragment extends Fragment {
         Activity activity = getActivity();
         if (activity != null) {
             File carpeta = activity.getDir("wayra", Context.MODE_PRIVATE);
-            System.out.println("Carpeta: " + carpeta);
             File[] archivos = carpeta.listFiles();
             if (archivos != null) {
-                System.out.println("Archivos encontrados: " + archivos.length);
                 for (File archivo : archivos) {
-                    System.out.println("Archivo: " + archivo.getName());
-                    try {
-                        String json = leerArchivoJson(archivo);
-                        if (!json.isEmpty()) {
-                            System.out.println("JSON: " + json);
-                            Pasaje pasaje = convertirJsonAPasaje(json);
-                            System.out.println("Pasaje: " + pasaje);
-                            pasajes.add(pasaje);
+                    if (archivo.getName().startsWith("pj_")) {
+                        System.out.println("Archivo: " + archivo.getName());
+                        try {
+                            String json = leerArchivoJson(archivo);
+                            if (!json.isEmpty()) {
+                                Pasaje pasaje = convertirJsonAPasaje(json);
+                                pasajes.add(pasaje);
+                            }
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (IOException | JSONException e) {
-                        e.printStackTrace();
-                        System.out.println("Error al procesar el archivo: " + archivo.getName());
                     }
                 }
             }
@@ -103,30 +98,6 @@ public class SincronizarVentasFragment extends Fragment {
         String destino = jsonObject.optString("destino");
         String fecha = jsonObject.optString("fecha");
         String hora = jsonObject.optString("hora");
-
-        /*System.out.println("Fecha y hora recuperadas: "+fecha+" - "+hora);
-        SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-
-        Date date = null;
-        Time time = null;
-
-        try {
-            date = formatoFecha.parse(fecha);
-            Date dateHora = formatoHora.parse(hora);
-            if (dateHora != null) {
-                time = new Time(dateHora.getTime());
-            }
-            System.out.println("Fecha: "+date);
-            DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
-            System.out.println("Fecha: " + df.format(date));
-            return new Pasaje(primerNom, apePaterno, origen, destino, date, time);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-            System.out.println("Error al convertir la fecha y la hora");
-            return null;
-        }*/
         return new Pasaje(primerNom, apePaterno, origen, destino, fecha, hora);
     }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +41,13 @@ public class PasajesVentasFragment extends Fragment {
 
     private AutoCompleteTextView actvOrigen;
     private AutoCompleteTextView actvDestino;
-    private TextInputLayout tilDestino, tilPrimNombre, tilSegNombre, tilApePaterno, tilApeMaterno, tilNumIdentidad, tilTelefono, tilFecha, tilHora;
+    private TextInputLayout tilDestino;
+    private TextInputLayout tilPrimNombre;
+    private TextInputLayout tilSegNombre;
+    private TextInputLayout tilApePaterno;
+    private TextInputLayout tilApeMaterno;
+    private TextInputLayout tilNumIdentidad;
+    private TextInputLayout tilTelefono;
     private TextInputEditText tietPrecio, tietPrimNombre, tietSegNombre, tietApePaterno, tietApeMaterno, tietNumIdentidad, tietTelefono;
     private DatabaseHelper dbHelper;
     private Button btnConfirmar;
@@ -57,15 +65,15 @@ public class PasajesVentasFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tilFecha = view.findViewById(R.id.tilFecha);
-        tilHora = view.findViewById(R.id.tilHora);
+        TextInputLayout tilFecha = view.findViewById(R.id.tilFecha);
+        TextInputLayout tilHora = view.findViewById(R.id.tilHora);
         Calendar calendar = Calendar.getInstance();
         // Momento actual
         Date currentTime = calendar.getTime();
 
         SimpleDateFormat dateFormatDB = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         SimpleDateFormat timeFormatDB = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat nomFechaHora = new SimpleDateFormat("ddMMyyHHmmss", Locale.getDefault());
+        SimpleDateFormat nomFechaHora = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault());
 
         // Datos para la BD
         fechaActualBD = dateFormatDB.format(currentTime);
@@ -95,103 +103,33 @@ public class PasajesVentasFragment extends Fragment {
 
         tilPrimNombre = view.findViewById(R.id.tilPrimNombre);
         tietPrimNombre = view.findViewById(R.id.tietPrimNombre);
+        observadorPalabra(tietPrimNombre, tilPrimNombre);
+
         tilSegNombre = view.findViewById(R.id.tilSegNombre);
         tietSegNombre = view.findViewById(R.id.tietSegNombre);
+        observadorPalabras(tietSegNombre, tilSegNombre, true);
+
         tilApePaterno = view.findViewById(R.id.tilApePaterno);
         tietApePaterno = view.findViewById(R.id.tietApePaterno);
+        observadorPalabras(tietApePaterno, tilApePaterno, false);
+
         tilApeMaterno = view.findViewById(R.id.tilApeMaterno);
         tietApeMaterno = view.findViewById(R.id.tietApeMaterno);
+        observadorPalabras(tietApeMaterno, tilApeMaterno, false);
+
+        tietNumIdentidad = view.findViewById(R.id.tietNumIdentidad);
+        tilNumIdentidad = view.findViewById(R.id.tilNumIdentidad);
+        observadorNumeros(tietNumIdentidad, tilNumIdentidad, false);
+
+        tietTelefono = view.findViewById(R.id.tietTelefono);
+        tilTelefono = view.findViewById(R.id.tilTelefono);
+        observadorNumeros(tietTelefono, tilTelefono, true);
+
         actvOrigen = view.findViewById(R.id.actvOrigen);
         actvDestino = view.findViewById(R.id.actvDestino);
         tilDestino = view.findViewById(R.id.tilDestino);
         tietPrecio = view.findViewById(R.id.tietPrecio);
-        tilNumIdentidad = view.findViewById(R.id.tilNumIdentidad);
-        tietNumIdentidad = view.findViewById(R.id.tietNumIdentidad);
-        tilTelefono = view.findViewById(R.id.tilTelefono);
-        tietTelefono = view.findViewById(R.id.tietTelefono);
         btnConfirmar = view.findViewById(R.id.btnConfirmar);
-
-        tietPrimNombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarPalabra(userInput, tilPrimNombre);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietPrimNombre.setOnFocusChangeListener((v, hasFocus) -> tilPrimNombre.setCounterEnabled(hasFocus));
-
-        tietSegNombre.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarPalabrasOpcional(tietSegNombre, tilSegNombre);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietSegNombre.setOnFocusChangeListener((v, hasFocus) -> tilSegNombre.setCounterEnabled(hasFocus));
-
-        tietApePaterno.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarPalabras(tietApePaterno, tilApePaterno);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietApePaterno.setOnFocusChangeListener((v, hasFocus) -> tilApePaterno.setCounterEnabled(hasFocus));
-
-        tietApeMaterno.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarPalabras(tietApeMaterno, tilApeMaterno);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietApeMaterno.setOnFocusChangeListener((v, hasFocus) -> tilApeMaterno.setCounterEnabled(hasFocus));
-
-        tietNumIdentidad.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarNumeros(userInput, tilNumIdentidad, 12);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietNumIdentidad.setOnFocusChangeListener((v, hasFocus) -> tilNumIdentidad.setCounterEnabled(hasFocus));
-
-        tietTelefono.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
-                validarNumerosOpcional(userInput, tilTelefono, 7,10);
-                btnConfirmar.setEnabled(validarCampos());
-            }
-
-            @Override
-            public void afterTextChanged(Editable userInput) {}
-        });
-        tietTelefono.setOnFocusChangeListener((v, hasFocus) -> tilTelefono.setCounterEnabled(hasFocus));
 
         configurarAdaptadores();
 
@@ -217,106 +155,151 @@ public class PasajesVentasFragment extends Fragment {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            getActivity().getSupportFragmentManager().popBackStack();
+            FragmentActivity activity = getActivity();
+            if (activity != null) {
+                activity.getSupportFragmentManager().popBackStack();
+            }
         });
 
         return view;
     }
 
+    private void observadorPalabra(TextInputEditText tiet, TextInputLayout til) {
+        tiet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                validarPalabra(userInput, til);
+            }
+            @Override
+            public void afterTextChanged(Editable userInput) {
+                btnConfirmar.setEnabled(validarCampos());
+            }
+        });
+        tiet.setOnFocusChangeListener((v, hasFocus) -> til.setCounterEnabled(hasFocus));
+    }
+
+    private void observadorPalabras(TextInputEditText tiet, TextInputLayout til, boolean esOpcional) {
+        tiet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                validarPalabras(tiet, til,esOpcional);
+            }
+            @Override
+            public void afterTextChanged(Editable userInput) {
+                btnConfirmar.setEnabled(validarCampos());
+            }
+        });
+        tiet.setOnFocusChangeListener((v, hasFocus) -> til.setCounterEnabled(hasFocus));
+    }
+
+    private void observadorNumeros(TextInputEditText tiet, TextInputLayout til, boolean esOpcional) {
+        tiet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence userInput, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence userInput, int start, int before, int count) {
+                if (esOpcional) {
+                    validarNumeros(userInput, til,7,9,true);
+                } else {
+                    validarNumeros(userInput, til,8,12,false);
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable userInput) {
+                btnConfirmar.setEnabled(validarCampos());
+            }
+        });
+        tiet.setOnFocusChangeListener((v, hasFocus) -> til.setCounterEnabled(hasFocus));
+    }
+
     private void validarPalabra(CharSequence entradaUsuario, TextInputLayout tilCampo) {
         String texto = entradaUsuario.toString();
+        boolean hayError;
         if (texto.isEmpty()) {
-            tilCampo.setError("Campo obligatorio");
+            tilCampo.setError("Obligatorio");
+            hayError = true;
         } else if (texto.contains(" ") && !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$")) {
             tilCampo.setError("Espacio y carácter no permitido");
+            hayError = true;
         } else if (texto.contains(" ")) {
             tilCampo.setError("Espacio no permitido");
+            hayError = true;
         } else if (!texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$")) {
             tilCampo.setError("Carácter no permitido");
-        } else if (texto.length() >= 32) {
+            hayError = true;
+        } else if (texto.length() > 32) {
             tilCampo.setError("La entrada es demasiado larga");
+            hayError = true;
         } else {
             tilCampo.setError(null);
             tilCampo.setErrorEnabled(false);
+            hayError = false;
         }
+        tilCampo.setCounterEnabled(!hayError);
     }
 
-    private void validarPalabras(TextInputEditText tietCampo, TextInputLayout tilCampo) {
+    private void validarPalabras(TextInputEditText tietCampo, TextInputLayout tilCampo, boolean esOpcional) {
         CharSequence entradaUsuario = tietCampo.getText();
-        if (entradaUsuario == null) {
-            tilCampo.setError("Campo obligatorio");
-            return;
-        }
-        String texto = entradaUsuario.toString();
-        if (texto.isEmpty()) {
-            tilCampo.setError("Campo obligatorio");
-        } else if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
-            tilCampo.setError("Entrada inválida");
-        } else if (texto.length() >= 36) {
-            tilCampo.setError("La entrada es demasiado larga");
+        boolean hayError;
+
+        if (entradaUsuario == null || entradaUsuario.toString().isEmpty()) {
+            if (!esOpcional) {
+                tilCampo.setError("Obligatorio");
+                hayError = true;
+            } else {
+                tilCampo.setError(null);
+                tilCampo.setErrorEnabled(false);
+                hayError = false;
+            }
         } else {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
+            String texto = entradaUsuario.toString();
+            if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
+                tilCampo.setError("Entrada inválida");
+                hayError = true;
+            } else if (texto.length() >= 36) {
+                tilCampo.setError("La entrada es demasiado larga");
+                hayError = true;
+            } else {
+                tilCampo.setError(null);
+                tilCampo.setErrorEnabled(false);
+                hayError = false;
+            }
         }
+        tilCampo.setCounterEnabled(!hayError);
     }
 
-    private void validarPalabrasOpcional(TextInputEditText tietCampo, TextInputLayout tilCampo) {
-        CharSequence entradaUsuario = tietCampo.getText();
-        if (entradaUsuario == null) {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-            return;
-        }
-        String texto = entradaUsuario.toString();
-        if (texto.isEmpty()) {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-        } else if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
-            tilCampo.setError("Entrada inválida");
-        } else if (texto.length() >= 36) {
-            tilCampo.setError("La entrada es demasiado larga");
-        } else {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-        }
-    }
+    private void validarNumeros(CharSequence entradaUsuario, TextInputLayout tilCampo, int longitudMinima, int longitudMaxima, boolean esOpcional) {
+        boolean hayError;
 
-    private void validarNumeros(CharSequence entradaUsuario, TextInputLayout tilCampo, int longitudMaxima) {
-        if (entradaUsuario == null) {
-            tilCampo.setError("Campo obligatorio");
-            return;
-        }
-        String texto = entradaUsuario.toString();
-        if (texto.isEmpty()) {
-            tilCampo.setError("Campo obligatorio");
-        } else if (!texto.matches("\\d+") || texto.length() > longitudMaxima) {
-            tilCampo.setError("Entrada inválida");
+        if (entradaUsuario == null || entradaUsuario.toString().isEmpty()) {
+            if (!esOpcional) {
+                tilCampo.setError("Obligatorio");
+                hayError = true;
+            } else {
+                tilCampo.setError(null);
+                tilCampo.setErrorEnabled(false);
+                hayError = false;
+            }
         } else {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
+            String texto = entradaUsuario.toString();
+            if (!texto.matches("\\d+") || texto.length() < longitudMinima){
+                tilCampo.setError("Minimo " + longitudMinima + " dígitos");
+                hayError = true;
+            } else if (!texto.matches("\\d+") || texto.length() > longitudMaxima) {
+                tilCampo.setError("Entrada inválida");
+                hayError = true;
+            } else {
+                tilCampo.setError(null);
+                tilCampo.setErrorEnabled(false);
+                hayError = false;
+            }
         }
+        tilCampo.setCounterEnabled(!hayError);
     }
-
-    private void validarNumerosOpcional(CharSequence entradaUsuario, TextInputLayout tilCampo, int longitudMinima, int longitudMaxima) {
-        if (entradaUsuario == null) {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-            return;
-        }
-        String texto = entradaUsuario.toString();
-        if (texto.isEmpty()) {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-        } else if (!texto.matches("\\d+") || texto.length() < longitudMinima){
-            tilCampo.setError("Minimo " + longitudMinima + " dígitos");
-        } else if (!texto.matches("\\d+") || texto.length() >= longitudMaxima) {
-            tilCampo.setError("Entrada inválida");
-        } else {
-            tilCampo.setError(null);
-            tilCampo.setErrorEnabled(false);
-        }
-    }
-
 
     private void configurarAdaptadores() {
         List<Provincia> provincias = dbHelper.obtenerProvincias();
@@ -345,12 +328,12 @@ public class PasajesVentasFragment extends Fragment {
     }
 
     private boolean validarCampos() {
-        return !tietPrimNombre.getText().toString().isEmpty() && tilPrimNombre.getError() == null &&
-                (!tietSegNombre.getText().toString().isEmpty() && tilSegNombre.getError() == null || tietSegNombre.getText().toString().isEmpty()) &&
-                !tietApePaterno.getText().toString().isEmpty() && tilApePaterno.getError() == null &&
-                !tietApeMaterno.getText().toString().isEmpty() && tilApeMaterno.getError() == null &&
-                !tietNumIdentidad.getText().toString().isEmpty() && tilNumIdentidad.getError() == null &&
-                (!tietTelefono.getText().toString().isEmpty() && tilTelefono.getError() == null || tietTelefono.getText().toString().isEmpty()) &&
+        return tietPrimNombre.getText() != null && !tietPrimNombre.getText().toString().isEmpty() && tilPrimNombre.getError() == null &&
+                (tietSegNombre.getText() != null && !tietSegNombre.getText().toString().isEmpty() && tilSegNombre.getError() == null || tietSegNombre.getText() == null || tietSegNombre.getText().toString().isEmpty()) &&
+                tietApePaterno.getText() != null && !tietApePaterno.getText().toString().isEmpty() && tilApePaterno.getError() == null &&
+                tietApeMaterno.getText() != null && !tietApeMaterno.getText().toString().isEmpty() && tilApeMaterno.getError() == null &&
+                tietNumIdentidad.getText() != null && !tietNumIdentidad.getText().toString().isEmpty() && tilNumIdentidad.getError() == null &&
+                (tietTelefono.getText() != null && !tietTelefono.getText().toString().isEmpty() && tilTelefono.getError() == null || tietTelefono.getText() == null || tietTelefono.getText().toString().isEmpty()) &&
                 idOrigen != -1 &&
                 idDestino != -1 &&
                 idOrigen != idDestino;
@@ -358,37 +341,57 @@ public class PasajesVentasFragment extends Fragment {
 
     private void guardarDatos() throws JSONException {
         JSONObject datos = new JSONObject();
+        List<String> camposVacios = new ArrayList<>();
         try {
-            datos.put("primerNom", tietPrimNombre.getText().toString());
-            String segundoNom = tietSegNombre.getText() != null ? tietSegNombre.getText().toString() : null;
-            if (segundoNom != null && segundoNom.isEmpty()) {segundoNom = null;}
-            datos.put("segundoNom", segundoNom);
-            datos.put("apePaterno", tietApePaterno.getText().toString());
-            datos.put("apeMaterno", tietApeMaterno.getText().toString());
-            datos.put("numIdentidad", tietNumIdentidad.getText().toString());
-            datos.put("telefono", tietTelefono.getText().toString());
+            datos.put("primerNom", obtenerTexto(tietPrimNombre, "primerNom", camposVacios, false));
+            datos.put("segundoNom", obtenerTexto(tietSegNombre, "segundoNom", camposVacios, true));
+            datos.put("apePaterno", obtenerTexto(tietApePaterno, "apePaterno", camposVacios,false));
+            datos.put("apeMaterno", obtenerTexto(tietApeMaterno, "apeMaterno", camposVacios,false));
+            datos.put("numIdentidad", obtenerTexto(tietNumIdentidad, "numIdentidad", camposVacios,false));
+            datos.put("telefono", obtenerTexto(tietTelefono, "telefono", camposVacios, true));
             datos.put("origen", origen);
             datos.put("destino", destino);
-            datos.put("precio", Double.parseDouble(tietPrecio.getText().toString()));
+            String precioStr = obtenerTexto(tietPrecio, "precio", camposVacios,false);
+            double precio = precioStr != null ? Double.parseDouble(precioStr) : 0.0;
+            datos.put("precio", precio);
             datos.put("fecha", fechaActualBD);
             datos.put("hora", horaActualBD);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if (!camposVacios.isEmpty()) {
+            System.out.println("Los siguientes campos están vacíos: " + String.join(", ", camposVacios));
+            return;
+        }
+
         String json = datos.toString(4);
-        String nombreArchivo = "pasaje_" + nomFechaHoraFichero + ".json";
+        String nombreArchivo = "pj_" +nomFechaHoraFichero + "_" + obtenerTexto(tietNumIdentidad, "numIdentidad", camposVacios,false) + ".json";
 
         // Obtener una referencia a la carpeta "wayra" (y crearla si no existe)
-        File carpeta = getActivity().getDir("wayra", Context.MODE_PRIVATE);
-        File archivo = new File(carpeta, nombreArchivo);
+        if(getActivity()!=null){
+            File carpeta = getActivity().getDir("wayra", Context.MODE_PRIVATE);
+            File archivo = new File(carpeta, nombreArchivo);
 
-        try {
-            FileOutputStream fos = new FileOutputStream(archivo);
-            fos.write(json.getBytes());
-            fos.close();
-            Toast.makeText(getActivity(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                FileOutputStream fos = new FileOutputStream(archivo);
+                fos.write(json.getBytes());
+                fos.close();
+                Toast.makeText(getActivity(), "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String obtenerTexto(TextInputEditText tiet, String nombreCampo, List<String> camposVacios, boolean esOpcional) {
+        if (tiet.getText() != null && !tiet.getText().toString().isEmpty()) {
+            return tiet.getText().toString();
+        } else {
+            if (!esOpcional) {
+                camposVacios.add(nombreCampo);
+            }
+            return null;
         }
     }
 }
