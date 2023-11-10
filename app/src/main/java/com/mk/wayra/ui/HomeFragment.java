@@ -17,7 +17,6 @@ import com.mk.wayra.ui.crudapi.PasajesSelBdFragment;
 import java.io.File;
 
 public class HomeFragment extends Fragment {
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +33,7 @@ public class HomeFragment extends Fragment {
         TextView tvCantidad = view.findViewById(R.id.tvCantidad);
         tvCantidad.setText(getResources().getString(R.string.fh_card_2_c_secund, contarArchivos("pj_")));
 
-        mcvTicketSales.setOnClickListener(v -> replaceFragment(new PasajesVentasFragment()));
+        mcvTicketSales.setOnClickListener(v -> replaceFragment(new PasajeVentaFragment()));
         mcvSynchronizeSales.setOnClickListener(v -> replaceFragment(new SincronizarVentasFragment()));
         mcvDataBase.setOnClickListener(v -> replaceFragment(new PasajesSelBdFragment()));
         return view;
@@ -53,7 +52,6 @@ public class HomeFragment extends Fragment {
         if(getActivity()!=null){
             File carpeta = getActivity().getDir("wayra", Context.MODE_PRIVATE);
             File[] archivos = carpeta.listFiles();
-
             for (File archivo : archivos) {
                 if (archivo.getName().startsWith(prefijo)) {
                     contador++;
@@ -62,5 +60,4 @@ public class HomeFragment extends Fragment {
         }
         return contador;
     }
-
 }

@@ -23,6 +23,10 @@ public class PasajeAdapter extends RecyclerView.Adapter<PasajeAdapter.PasajeView
         this.pasajes = pasajes;
     }
 
+    public void setPasajes(List<Pasaje> pasajes) {
+        this.pasajes = pasajes;
+    }
+
     class PasajeViewHolder extends RecyclerView.ViewHolder {
         private TextView actvDatosPersonales, actvOrigen, actvDestino, actvHora, actvFecha;
 

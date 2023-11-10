@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">wayra</string>
+    <string name="app_name">Wayra</string>
 
     <!-- ......HomeFragment...... -->
     <string name="fh_card_1_titulo">Pasajes</string>
@@ -44,6 +44,21 @@
     <string name="fpv_til_obligatorio">Obligatorio</string>
     <string name="fpv_til_opcional">Opcional</string>
     <string name="precio_default">00.0</string>
+
+    <!-- ......ConstanciaFragment...... -->
+    <string name="fc_titulo">Constancia</string>
+    <string name="fc_logo">Wayra</string>
+    <string name="fc_fecha">fecha</string>
+    <string name="fc_sub_titulo">Pasaje Vendido</string>
+    <string name="fc_dato">dato</string>
+    <string name="fc_pasajero">Pasajero:</string>
+    <string name="fc_num_iden">Num. de Identidad:</string>
+    <string name="fc_origen">Origen:</string>
+    <string name="fc_destino">Destino:</string>
+    <string name="fc_costo">Costo:</string>
+    <string name="fc_mensaje">¡Que el camino te sonría!\nBuen viaje.</string>
+    <string name="fc_btn_descargar">Descargar</string>
+    <string name="fc_btn_compartir">Compartir</string>
 
     <!-- ......SincronizarVentasFragment...... -->
     <string name="fsv_titulo">Pasajes Vendidos</string>

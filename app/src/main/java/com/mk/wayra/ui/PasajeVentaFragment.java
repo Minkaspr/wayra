@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,7 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class PasajesVentasFragment extends Fragment {
+public class PasajeVentaFragment extends Fragment {
 
     private AutoCompleteTextView actvOrigen;
     private AutoCompleteTextView actvDestino;
@@ -99,7 +98,7 @@ public class PasajesVentasFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pasajes_ventas, container, false);
+        View view = inflater.inflate(R.layout.fragment_pasaje_venta, container, false);
 
         tilPrimNombre = view.findViewById(R.id.tilPrimNombre);
         tietPrimNombre = view.findViewById(R.id.tietPrimNombre);
@@ -155,10 +154,11 @@ public class PasajesVentasFragment extends Fragment {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-            FragmentActivity activity = getActivity();
+            /*FragmentActivity activity = getActivity();
             if (activity != null) {
                 activity.getSupportFragmentManager().popBackStack();
-            }
+            }*/
+            enviarDatos();
         });
 
         return view;
@@ -392,6 +392,45 @@ public class PasajesVentasFragment extends Fragment {
                 camposVacios.add(nombreCampo);
             }
             return null;
+        }
+    }
+
+    private void enviarDatos() {
+        // Captura los datos
+        String primerNom = tietPrimNombre.getText().toString();
+        String apePaterno = tietApePaterno.getText().toString();
+        String numIdentidad = tietNumIdentidad.getText().toString();
+        String origen = this.origen; // Asegúrate de que 'origen' esté inicializado
+        String destino = this.destino; // Asegúrate de que 'destino' esté inicializado
+        String precioStr = tietPrecio.getText().toString();
+        double precio = precioStr.isEmpty() ? 0.0 : Double.parseDouble(precioStr);
+        String fecha = fechaActualBD; // Asegúrate de que 'fechaActualBD' esté inicializado
+        String hora = horaActualBD; // Asegúrate de que 'horaActualBD' esté inicializado
+
+        // Crea un Bundle y coloca los datos en él
+        Bundle bundle = new Bundle();
+        bundle.putString("primerNom", primerNom);
+        bundle.putString("apePaterno", apePaterno);
+        bundle.putString("numIdentidad", numIdentidad);
+        bundle.putString("origen", origen);
+        bundle.putString("destino", destino);
+        bundle.putDouble("precio", precio);
+        bundle.putString("fecha", fecha);
+        bundle.putString("hora", hora);
+
+        // Crea una instancia del otro fragmento
+        ConstanciaFragment constanciaFragment = new ConstanciaFragment();
+
+        // Coloca el Bundle en los argumentos del fragmento
+        constanciaFragment.setArguments(bundle);
+        replaceFragment(constanciaFragment);
+    }
+
+
+    private void replaceFragment(Fragment fragment) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.replaceFragment(fragment, true);
         }
     }
 }

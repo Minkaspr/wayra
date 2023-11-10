@@ -22,7 +22,7 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnConfirmar"
+        android:id="@+id/btnSincronizar"
         style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="54dp"
