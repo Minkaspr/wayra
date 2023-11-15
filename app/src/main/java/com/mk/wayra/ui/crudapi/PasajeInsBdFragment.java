@@ -48,7 +48,7 @@ public class PasajeInsBdFragment extends Fragment {
     private TextInputLayout tilTelefono;
     private TextInputEditText tietPrecio, tietPrimNombre, tietSegNombre, tietApePaterno, tietApeMaterno, tietNumIdentidad, tietTelefono;
     private DatabaseHelper dbHelper;
-    private Button btnConfirmar;
+    private Button btnConfirmar, btnVolverAtras;;
     private int idOrigen = -1;
     private int idDestino = -1;
     String origen,destino;
@@ -123,6 +123,7 @@ public class PasajeInsBdFragment extends Fragment {
         tilDestino = view.findViewById(R.id.tilDestino);
         tietPrecio = view.findViewById(R.id.tietPrecio);
         btnConfirmar = view.findViewById(R.id.btnConfirmar);
+        btnVolverAtras = view.findViewById(R.id.btnVolverAtras);
 
         configurarAdaptadores();
 
@@ -140,6 +141,12 @@ public class PasajeInsBdFragment extends Fragment {
             destino = provinciaSeleccionada.getNombre();
             actualizarPrecio();
             btnConfirmar.setEnabled(validarCampos());
+        });
+
+        btnVolverAtras.setOnClickListener(v->{
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
         });
 
         btnConfirmar.setOnClickListener(v -> {

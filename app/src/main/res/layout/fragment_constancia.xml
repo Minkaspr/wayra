@@ -1,217 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ConstanciaFragment"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:padding="32dp">
-    <TextView
+    tools:context=".ui.ConstanciaFragment">
+
+    <Button
+        android:id="@+id/btnVolverAtras"
+        style="?attr/materialIconButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/fc_titulo"
-        android:textAppearance="?attr/textAppearanceTitleLarge"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:gravity="center">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:gravity="center">
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false">
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_logo"/>
-                        <TextView
-                            android:id="@+id/tvFecha"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textAlignment="textEnd"
-                            android:text="@string/fc_fecha"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="@string/fc_sub_titulo"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:layout_marginVertical="24dp"/>
-                    <GridLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:columnCount="3"
-                        android:rowCount="3">
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:layout_columnWeight="1"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:text="@string/fc_pasajero"/>
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="0dp"/>
-                        <TextView
-                            android:id="@+id/tvPasajero"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_dato"/>
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_columnWeight="1"
-                            android:layout_columnSpan="3"
-                            android:layout_height="8dp" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:layout_columnWeight="1"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:text="@string/fc_num_iden"/>
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="0dp"/>
-                        <TextView
-                            android:id="@+id/tvNumIdentidad"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_dato"/>
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_columnWeight="1"
-                            android:layout_columnSpan="3"
-                            android:layout_height="8dp" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:layout_columnWeight="1"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:text="@string/fc_origen"/>
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="0dp"/>
-                        <TextView
-                            android:id="@+id/tvOrigen"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_dato"/>
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_columnWeight="1"
-                            android:layout_columnSpan="3"
-                            android:layout_height="8dp" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:layout_columnWeight="1"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:text="@string/fc_destino"/>
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="0dp"/>
-                        <TextView
-                            android:id="@+id/tvDestino"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_dato"/>
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_columnWeight="1"
-                            android:layout_columnSpan="3"
-                            android:layout_height="8dp" />
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="textEnd"
-                            android:layout_columnWeight="1"
-                            android:textAppearance="?attr/textAppearanceTitleSmall"
-                            android:text="@string/fc_costo"/>
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="0dp"/>
-                        <TextView
-                            android:id="@+id/tvCosto"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_columnWeight="1"
-                            android:textAlignment="textStart"
-                            android:text="@string/fc_dato"/>
-                    </GridLayout>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="12dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:textAlignment="center"
-                        android:text="@string/fc_mensaje"
-                        android:textAppearance="?attr/textAppearanceLabelSmall"
-                        android:layout_marginBottom="8dp"/>
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </com.google.android.material.card.MaterialCardView>
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        android:padding="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/fc_titulo"
+            android:textAppearance="?attr/textAppearanceTitleLarge" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:paddingHorizontal="48dp">
-            <Button
-                android:id="@+id/btnDescargar"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fc_btn_descargar"
-                app:icon="@drawable/ic_download"
-                />
-            <View
-                android:layout_width="0dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
-            <Button
-                android:id="@+id/btnCompartir"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fc_btn_compartir"
-                app:icon="@drawable/ic_share"
-                />
+                android:layout_weight="3"
+                android:gravity="center">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="24dp">
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/fc_logo"
+                                android:textAlignment="textStart" />
+
+                            <TextView
+                                android:id="@+id/tvFecha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/fc_fecha"
+                                android:textAlignment="textEnd" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginVertical="24dp"
+                            android:text="@string/fc_sub_titulo"
+                            android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+                        <GridLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="3"
+                            android:rowCount="3">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_pasajero"
+                                android:textAlignment="textEnd"
+                                android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="0dp" />
+
+                            <TextView
+                                android:id="@+id/tvPasajero"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_dato"
+                                android:textAlignment="textStart" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="8dp"
+                                android:layout_columnSpan="3"
+                                android:layout_columnWeight="1" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_num_iden"
+                                android:textAlignment="textEnd"
+                                android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="0dp" />
+
+                            <TextView
+                                android:id="@+id/tvNumIdentidad"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_dato"
+                                android:textAlignment="textStart" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="8dp"
+                                android:layout_columnSpan="3"
+                                android:layout_columnWeight="1" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_origen"
+                                android:textAlignment="textEnd"
+                                android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="0dp" />
+
+                            <TextView
+                                android:id="@+id/tvOrigen"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_dato"
+                                android:textAlignment="textStart" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="8dp"
+                                android:layout_columnSpan="3"
+                                android:layout_columnWeight="1" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_destino"
+                                android:textAlignment="textEnd"
+                                android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="0dp" />
+
+                            <TextView
+                                android:id="@+id/tvDestino"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_dato"
+                                android:textAlignment="textStart" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="8dp"
+                                android:layout_columnSpan="3"
+                                android:layout_columnWeight="1" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_costo"
+                                android:textAlignment="textEnd"
+                                android:textAppearance="?attr/textAppearanceTitleSmall" />
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="0dp" />
+
+                            <TextView
+                                android:id="@+id/tvCosto"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_columnWeight="1"
+                                android:text="@string/fc_dato"
+                                android:textAlignment="textStart" />
+                        </GridLayout>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/fc_mensaje"
+                            android:textAlignment="center"
+                            android:textAppearance="?attr/textAppearanceLabelSmall" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingHorizontal="48dp">
+
+                <Button
+                    android:id="@+id/btnDescargar"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fc_btn_descargar"
+                    app:icon="@drawable/ic_download" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnCompartir"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fc_btn_compartir"
+                    app:icon="@drawable/ic_share" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.constraintlayout.widget.ConstraintLayout>

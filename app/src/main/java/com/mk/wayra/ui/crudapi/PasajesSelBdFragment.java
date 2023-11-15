@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mk.wayra.R;
@@ -30,7 +31,7 @@ public class PasajesSelBdFragment extends Fragment {
     private RecyclerView rvPasajesVendidosBD;
     private PasajeRemotoAdapter adapter;
     private FloatingActionButton fabNuevoPasaje;
-
+    private Button btnVolverAtras;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,12 @@ public class PasajesSelBdFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<Pasaje>> call, @NonNull Throwable t) {
                 Log.e("BaseDatosFragment", "onFailure() called with: " + t.getMessage(), t);
+            }
+        });
+        btnVolverAtras = view.findViewById(R.id.btnVolverAtras);
+        btnVolverAtras.setOnClickListener(v->{
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
             }
         });
         return view;

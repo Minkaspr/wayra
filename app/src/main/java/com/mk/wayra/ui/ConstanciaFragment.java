@@ -56,6 +56,7 @@ public class ConstanciaFragment extends Fragment {
         tvCosto = view.findViewById(R.id.tvCosto);
         Button btnDescargar = view.findViewById(R.id.btnDescargar);
         Button btnCompartir = view.findViewById(R.id.btnCompartir);
+        Button btnVolverAtras = view.findViewById(R.id.btnVolverAtras);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -87,6 +88,10 @@ public class ConstanciaFragment extends Fragment {
             tvCosto.setText(String.valueOf(precio));
         }
 
+        btnVolverAtras.setOnClickListener(v->{
+
+        });
+
         btnDescargar.setOnClickListener(v->{
             String fechaHora = tvFecha.getText().toString();
             String nombrePasajero = tvPasajero.getText().toString();
@@ -105,13 +110,16 @@ public class ConstanciaFragment extends Fragment {
 
                 String fileName = "constancia_" + currentDateTime + ".png";
 
-                // Crea el archivo en el directorio de archivos externos de la aplicación
                 File imageFile = new File(appDir, fileName);
 
-                FileOutputStream fos = new FileOutputStream(imageFile);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                fos.close();
-                Toast.makeText(getActivity(), "Imagen guardada en " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                if (imageFile.exists()) {
+                    Toast.makeText(getActivity(), "El archivo ya fue descargado", Toast.LENGTH_SHORT).show();
+                } else {
+                    FileOutputStream fos = new FileOutputStream(imageFile);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.close();
+                    Toast.makeText(getActivity(), "Imagen guardada en " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(getActivity(), "Error al guardar la imagen", Toast.LENGTH_SHORT).show();
@@ -134,10 +142,13 @@ public class ConstanciaFragment extends Fragment {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
                 String currentDateTime = dateFormat.format(new Date());
 
-                String fileName = "constancia_" + currentDateTime + ".png";
+                String fileName = "constancia_temp_" + currentDateTime + ".png";
 
-                // Crea el archivo en el directorio de archivos externos de la aplicación
                 File imageFile = new File(appDir, fileName);
+
+                if (imageFile.exists()) {
+                    imageFile.delete();
+                }
 
                 FileOutputStream fos = new FileOutputStream(imageFile);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -165,6 +176,7 @@ public class ConstanciaFragment extends Fragment {
                 Toast.makeText(getActivity(), "Error al guardar la imagen", Toast.LENGTH_SHORT).show();
             }
         });
+
 
 
         return view;
@@ -317,5 +329,12 @@ public class ConstanciaFragment extends Fragment {
         canvas.drawText(mensajeP2, xMensajeP2, y, paintPequeno );
 
         return bitmap;
+    }
+
+    private void replaceFragment(Fragment fragment, boolean add) {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.replaceFragment(fragment, add);
+        }
     }
 }

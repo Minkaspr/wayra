@@ -46,7 +46,7 @@ public class SincronizarVentasFragment extends Fragment {
     private List<Pasaje> pasajes;
     private RecyclerView rvPasajesVendidos;
     private PasajeAdapter adapter;
-    private Button btnSincronizar;
+    private Button btnSincronizar, btnVolverAtras;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +63,12 @@ public class SincronizarVentasFragment extends Fragment {
         btnSincronizar = view.findViewById(R.id.btnSincronizar);
         btnSincronizar.setOnClickListener(v->sincronizarPasajes());
         btnSincronizar.setEnabled(!pasajes.isEmpty());
+        btnVolverAtras = view.findViewById(R.id.btnVolverAtras);
+        btnVolverAtras.setOnClickListener(v->{
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        });
         return view;
     }
 
