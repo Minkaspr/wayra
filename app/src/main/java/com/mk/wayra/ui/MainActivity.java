@@ -1,11 +1,15 @@
 package com.mk.wayra.ui;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.mk.wayra.R;
 import com.mk.wayra.util.DatabaseHelper;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 
 
     public void replaceFragment(Fragment fragment, boolean addToBackStack) {

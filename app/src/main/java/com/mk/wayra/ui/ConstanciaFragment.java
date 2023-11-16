@@ -1,6 +1,9 @@
 package com.mk.wayra.ui;
 
+import android.Manifest;
+
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,9 +12,13 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +37,15 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ConstanciaFragment extends Fragment {
-
     private TextView tvFecha;
     private TextView tvPasajero;
     private TextView tvNumIdentidad;
     private TextView tvOrigen;
     private TextView tvDestino;
     private TextView tvCosto;
+    private String currentDateTime;
+    private Bitmap bitmap;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,9 @@ public class ConstanciaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_constancia, container, false);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        currentDateTime = dateFormat.format(new Date());
 
         tvFecha = view.findViewById(R.id.tvFecha);
         tvPasajero = view.findViewById(R.id.tvPasajero);
@@ -89,10 +101,12 @@ public class ConstanciaFragment extends Fragment {
         }
 
         btnVolverAtras.setOnClickListener(v->{
-
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
         });
 
-        btnDescargar.setOnClickListener(v->{
+        btnDescargar.setOnClickListener(v -> {
             String fechaHora = tvFecha.getText().toString();
             String nombrePasajero = tvPasajero.getText().toString();
             String numIdentidad = tvNumIdentidad.getText().toString();
@@ -100,29 +114,17 @@ public class ConstanciaFragment extends Fragment {
             String destino = tvDestino.getText().toString();
             String costo = tvCosto.getText().toString();
 
-            Bitmap bitmap = crearImagenConTexto(fechaHora, nombrePasajero, numIdentidad, origen, destino, costo);
+            bitmap = crearImagenConTexto(fechaHora, nombrePasajero, numIdentidad, origen, destino, costo);
 
-            // Guarda la imagen en el directorio de archivos externos de la aplicación
-            try {
-                File appDir = getActivity().getExternalFilesDir(null);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-                String currentDateTime = dateFormat.format(new Date());
-
-                String fileName = "constancia_" + currentDateTime + ".png";
-
-                File imageFile = new File(appDir, fileName);
-
-                if (imageFile.exists()) {
-                    Toast.makeText(getActivity(), "El archivo ya fue descargado", Toast.LENGTH_SHORT).show();
-                } else {
-                    FileOutputStream fos = new FileOutputStream(imageFile);
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                    fos.close();
-                    Toast.makeText(getActivity(), "Imagen guardada en " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(getActivity(), "Error al guardar la imagen", Toast.LENGTH_SHORT).show();
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                // Permiso no concedido, solicitarlo.
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+            } else {
+                // Permiso ya concedido, guardar la imagen.
+                guardarImagen(bitmap);
             }
         });
 
@@ -139,11 +141,7 @@ public class ConstanciaFragment extends Fragment {
             // Guarda la imagen en el directorio de archivos externos de la aplicación
             try {
                 File appDir = getActivity().getExternalFilesDir(null);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
-                String currentDateTime = dateFormat.format(new Date());
-
                 String fileName = "constancia_temp_" + currentDateTime + ".png";
-
                 File imageFile = new File(appDir, fileName);
 
                 if (imageFile.exists()) {
@@ -177,9 +175,25 @@ public class ConstanciaFragment extends Fragment {
             }
         });
 
-
-
         return view;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permiso concedido, guardar la imagen.
+                    guardarImagen(bitmap);
+                } else {
+                    // Permiso denegado, mostrar una explicación al usuario.
+                    Toast.makeText(getActivity(), "Permiso denegado", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            // Aquí puedes manejar otros códigos de solicitud de permisos si los tienes.
+        }
     }
 
     private Bitmap crearImagenConTexto(String fechaHora, String nombrePasajero, String numIdentidad, String origen, String destino, String costo) {
@@ -331,10 +345,37 @@ public class ConstanciaFragment extends Fragment {
         return bitmap;
     }
 
-    private void replaceFragment(Fragment fragment, boolean add) {
-        MainActivity activity = (MainActivity) getActivity();
-        if (activity != null) {
-            activity.replaceFragment(fragment, add);
+    // Método para guardar la imagen en un directorio público
+    private void guardarImagen(Bitmap bitmap) {
+        // Guarda la imagen en el directorio de imágenes públicas de la aplicación
+        try {
+            File appDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Wayra");
+            if (!appDir.exists()) {
+                if (!appDir.mkdirs()) {
+                    Log.d("Wayra", "failed to create directory");
+                    return;
+                }
+            }
+            String fileName = "constancia_" + currentDateTime + ".png";
+            File imageFile = new File(appDir, fileName);
+
+            if (imageFile.exists()) {
+                Toast.makeText(getActivity(), "El archivo ya fue descargado", Toast.LENGTH_SHORT).show();
+            } else {
+                FileOutputStream fos = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+                Toast.makeText(getActivity(), "Imagen guardada en " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+                // Escanea el archivo para que aparezca en la galería
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri fileUri = Uri.fromFile(imageFile);
+                mediaScanIntent.setData(fileUri);
+                getActivity().sendBroadcast(mediaScanIntent);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Error al guardar la imagen", Toast.LENGTH_SHORT).show();
         }
     }
 }
