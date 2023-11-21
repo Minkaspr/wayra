@@ -48,7 +48,7 @@ public class PasajeInsBdFragment extends Fragment {
     private TextInputLayout tilTelefono;
     private TextInputEditText tietPrecio, tietPrimNombre, tietSegNombre, tietApePaterno, tietApeMaterno, tietNumIdentidad, tietTelefono;
     private DatabaseHelper dbHelper;
-    private Button btnConfirmar, btnVolverAtras;;
+    private Button btnConfirmar, btnVolverAtras;
     private int idOrigen = -1;
     private int idDestino = -1;
     String origen,destino;
@@ -225,8 +225,8 @@ public class PasajeInsBdFragment extends Fragment {
         } else if (!texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$")) {
             tilCampo.setError("Carácter no permitido");
             hayError = true;
-        } else if (texto.length() > 32) {
-            tilCampo.setError("La entrada es demasiado larga");
+        } else if (texto.length() < 3) {
+            tilCampo.setError("Mínimo 3 caracteres");
             hayError = true;
         } else {
             tilCampo.setError(null);
@@ -254,8 +254,8 @@ public class PasajeInsBdFragment extends Fragment {
             if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
                 tilCampo.setError("Entrada inválida");
                 hayError = true;
-            } else if (texto.length() >= 36) {
-                tilCampo.setError("La entrada es demasiado larga");
+            } else if (texto.length() < 3) {
+                tilCampo.setError("Mínimo 3 caracteres");
                 hayError = true;
             } else {
                 tilCampo.setError(null);

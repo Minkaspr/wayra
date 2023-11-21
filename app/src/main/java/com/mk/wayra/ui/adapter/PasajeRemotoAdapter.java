@@ -15,6 +15,7 @@ import com.mk.wayra.model.Pasaje;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -56,7 +57,30 @@ public class PasajeRemotoAdapter extends RecyclerView.Adapter<PasajeRemotoAdapte
         String nombreApellido =  context.getResources().getString(R.string.ipl_datos_pers, pasaje.getPrimerNom(), pasaje.getApePaterno());
         String origen = pasaje.getOrigen();
         String destino = pasaje.getDestino();
-        String hora = pasaje.getHora();
+        //String hora = pasaje.getHora();
+        String horaString = pasaje.getHora();
+        String horaAmigable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Para Android Oreo (8.0) o superior, usa java.time.LocalTime
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime hora = LocalTime.parse(horaString, formatoEntrada);
+
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("hh:mm a", new Locale("es", "ES"));
+            horaAmigable = hora.format(formatoSalida).replace("p. m.", "PM").replace("a. m.", "AM");
+        } else {
+            // Para versiones anteriores a Android Oreo, usa java.util.Date
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+            Date hora = null;
+            try {
+                hora = formatoEntrada.parse(horaString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("hh:mm a", new Locale("es", "ES"));
+            horaAmigable = formatoSalida.format(hora).replace("p. m.", "PM").replace("a. m.", "AM");
+        }
+
         String fechaString = pasaje.getFecha();
         String fechaAmigable;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -82,7 +106,7 @@ public class PasajeRemotoAdapter extends RecyclerView.Adapter<PasajeRemotoAdapte
         holder.actvDatosPersonales.setText(nombreApellido);
         holder.actvOrigen.setText(origen);
         holder.actvDestino.setText(destino);
-        holder.actvHora.setText(hora);
+        holder.actvHora.setText(horaAmigable);
         holder.actvFecha.setText(fechaAmigable);
     }
 
