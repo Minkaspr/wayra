@@ -12,7 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mk.wayra.R;
 import com.mk.wayra.model.Pasaje;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PasajeAdapter extends RecyclerView.Adapter<PasajeAdapter.PasajeViewHolder> {
     private Context context;
@@ -45,7 +51,29 @@ public class PasajeAdapter extends RecyclerView.Adapter<PasajeAdapter.PasajeView
             actvOrigen.setText(pasaje.getOrigen());
             actvDestino.setText(pasaje.getDestino());
             actvHora.setText(String.valueOf(pasaje.getHora()));
-            actvFecha.setText(String.valueOf(pasaje.getFecha()));
+            String fechaString = String.valueOf(pasaje.getFecha());
+            String fechaAmigable;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                // Para Android Oreo (8.0) o superior, usa java.time.LocalDate
+                DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate fecha = LocalDate.parse(fechaString, formatoEntrada);
+
+                DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("dd MMM. yyyy", new Locale("es", "ES"));
+                fechaAmigable = fecha.format(formatoSalida);
+            } else {
+                // Para versiones anteriores a Android Oreo, usa java.util.Date
+                SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date fecha = null;
+                try {
+                    fecha = formatoEntrada.parse(fechaString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                SimpleDateFormat formatoSalida = new SimpleDateFormat("dd MMM yyyy", new Locale("es", "ES"));
+                fechaAmigable = formatoSalida.format(fecha);
+            }
+            actvFecha.setText(fechaAmigable);
         }
     }
 

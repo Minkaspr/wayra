@@ -192,7 +192,6 @@ public class ConstanciaFragment extends Fragment {
                 }
                 return;
             }
-            // Aquí puedes manejar otros códigos de solicitud de permisos si los tienes.
         }
     }
 
@@ -276,11 +275,15 @@ public class ConstanciaFragment extends Fragment {
 
         // Fila 3
         String pasajeroTexto = "Pasajero:";
+        String nomPasajero = nombrePasajero;
+        if (nombrePasajero.length() > 18) {
+            nomPasajero = nombrePasajero.substring(0, 18) + "...";
+        }
         float anchoPasajero = paintNegrita.measureText(pasajeroTexto);
         float xPasajeroTexto = ((float)ancho / 2) - (separacionTexto / 2) - anchoPasajero;
         float xNombrePasajero = ((float)ancho / 2) + (separacionTexto / 2);
         canvas.drawText(pasajeroTexto, xPasajeroTexto, y, paintNegrita);
-        canvas.drawText(nombrePasajero, xNombrePasajero, y, paint);
+        canvas.drawText(nomPasajero, xNombrePasajero, y, paint);
 
         // Espacio
         y += paint.getTextSize() + 8;
@@ -352,7 +355,7 @@ public class ConstanciaFragment extends Fragment {
             File appDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Wayra");
             if (!appDir.exists()) {
                 if (!appDir.mkdirs()) {
-                    Log.d("Wayra", "failed to create directory");
+                    Log.d("Wayra", "No se pudo crear el directorio");
                     return;
                 }
             }

@@ -238,8 +238,8 @@ public class PasajeVentaFragment extends Fragment {
         } else if (!texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+$")) {
             tilCampo.setError("Carácter no permitido");
             hayError = true;
-        } else if (texto.length() > 32) {
-            tilCampo.setError("La entrada es demasiado larga");
+        } else if (texto.length() <= 3) {
+            tilCampo.setError("La entrada es demasiado corta");
             hayError = true;
         } else {
             tilCampo.setError(null);
@@ -267,8 +267,8 @@ public class PasajeVentaFragment extends Fragment {
             if (texto.startsWith(" ") || !texto.matches("^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+( [a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)*$")) {
                 tilCampo.setError("Entrada inválida");
                 hayError = true;
-            } else if (texto.length() >= 36) {
-                tilCampo.setError("La entrada es demasiado larga");
+            } else if (texto.length() <= 3) {
+                tilCampo.setError("La entrada es demasiado corta");
                 hayError = true;
             } else {
                 tilCampo.setError(null);

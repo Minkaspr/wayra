@@ -12,7 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mk.wayra.R;
 import com.mk.wayra.model.Pasaje;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PasajeRemotoAdapter extends RecyclerView.Adapter<PasajeRemotoAdapter.PasajeRemotoViewHolder>{
     private List<Pasaje> pasajesList;
@@ -41,7 +47,6 @@ public class PasajeRemotoAdapter extends RecyclerView.Adapter<PasajeRemotoAdapte
     public PasajeRemotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_pasaje_list, parent, false);
-
         return new PasajeRemotoViewHolder(itemView);
     }
 
@@ -52,12 +57,33 @@ public class PasajeRemotoAdapter extends RecyclerView.Adapter<PasajeRemotoAdapte
         String origen = pasaje.getOrigen();
         String destino = pasaje.getDestino();
         String hora = pasaje.getHora();
-        String fecha = pasaje.getFecha();
+        String fechaString = pasaje.getFecha();
+        String fechaAmigable;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            // Para Android Oreo (8.0) o superior, usa java.time.LocalDate
+            DateTimeFormatter formatoEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate fecha = LocalDate.parse(fechaString, formatoEntrada);
+
+            DateTimeFormatter formatoSalida = DateTimeFormatter.ofPattern("EEEE, dd MMM. yyyy", new Locale("es", "ES"));
+            fechaAmigable = fecha.format(formatoSalida);
+        } else {
+            // Para versiones anteriores a Android Oreo, usa java.util.Date
+            SimpleDateFormat formatoEntrada = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date fecha = null;
+            try {
+                fecha = formatoEntrada.parse(fechaString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            SimpleDateFormat formatoSalida = new SimpleDateFormat("EEEE, dd MMM yyyy", new Locale("es", "ES"));
+            fechaAmigable = formatoSalida.format(fecha);
+        }
         holder.actvDatosPersonales.setText(nombreApellido);
         holder.actvOrigen.setText(origen);
         holder.actvDestino.setText(destino);
         holder.actvHora.setText(hora);
-        holder.actvFecha.setText(fecha);
+        holder.actvFecha.setText(fechaAmigable);
     }
 
     @Override
